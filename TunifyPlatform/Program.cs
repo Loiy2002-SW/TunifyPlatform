@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using TunifyPlatform.Data;
+
 namespace TunifyPlatform
 {
     public class Program
@@ -5,9 +8,14 @@ namespace TunifyPlatform
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            string ConnectionStringVar = builder.Configuration.GetConnectionString("DefaultConnection");
+
+            builder.Services.AddDbContext<TunifyDbContext>(opt => opt.UseSqlServer(ConnectionStringVar));
+
             var app = builder.Build();
 
-            app.MapGet("/", () => "Hello World!");
+            app.MapGet("/", () => "This is my first app");
 
             app.Run();
         }
