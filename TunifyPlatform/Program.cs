@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TunifyPlatform.Data;
+using TunifyPlatform.Repositories.Interfaces;
+using TunifyPlatform.Repositories.Services;
 
 namespace TunifyPlatform
 {
@@ -13,9 +15,20 @@ namespace TunifyPlatform
 
             builder.Services.AddDbContext<TunifyDbContext>(opt => opt.UseSqlServer(ConnectionStringVar));
 
+            //register the repositeries
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IPlaylistRepository, PlaylistRepository>();
+            builder.Services.AddScoped<ISongRepository, SongRepository>();
+            builder.Services.AddScoped<IArtistRepository, ArtistRepository>();
+
+            builder.Services.AddControllers();
+
             var app = builder.Build();
 
-            app.MapGet("/", () => "This is my first app");
+            //app.MapGet("/", () => "This is my first app");
+
+            app.UseRouting();
+            app.MapControllers();
 
             app.Run();
         }
