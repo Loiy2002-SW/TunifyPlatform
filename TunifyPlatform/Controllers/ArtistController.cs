@@ -36,7 +36,7 @@ namespace TunifyPlatform.Controllers
         public async Task<IActionResult> CreateArtist(Artist artist)
         {
             await _artistRepository.AddArtistAsync(artist);
-            return CreatedAtAction(nameof(GetArtistById), new { id = artist.ArtistId }, artist);
+            return CreatedAtAction(nameof(GetArtistById), new { id = artist.Id }, artist);
         }
 
         [HttpPut("{id}")]
