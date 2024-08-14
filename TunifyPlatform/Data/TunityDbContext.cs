@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Reflection.Emit;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using TunifyPlatform.Models;
 
 namespace TunifyPlatform.Data
 {
     public class TunifyDbContext : DbContext
     {
-        public TunifyDbContext(DbContextOptions options) : base(options)
+        public TunifyDbContext(DbContextOptions<TunifyDbContext> options) : base(options)
         {
         }
 
@@ -18,11 +16,13 @@ namespace TunifyPlatform.Data
         public DbSet<Artist> Artists { get; set; }
         public DbSet<Album> Albums { get; set; }
         public DbSet<PlaylistSongs> PlaylistSongs { get; set; }
+        public DbSet<ArtistSongs> ArtistSongs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            // Configuring relationships between all Entities.
+
+            // Configuring relationships between all Entities
             modelBuilder.Entity<User>()
                 .HasOne(u => u.Subscription)
                 .WithMany(s => s.Users)
@@ -56,9 +56,21 @@ namespace TunifyPlatform.Data
                 .WithMany(s => s.PlaylistSongs)
                 .HasForeignKey(ps => ps.SongId);
 
+            // Configuring the ArtistSong relationship
+            modelBuilder.Entity<ArtistSongs>()
+                .HasKey(a => new { a.ArtistId, a.SongId });
+
+            modelBuilder.Entity<ArtistSongs>()
+                .HasOne(a => a.Artist)
+                .WithMany(a => a.ArtistSongs)
+                .HasForeignKey(a => a.ArtistId);
+
+            modelBuilder.Entity<ArtistSongs>()
+                .HasOne(a => a.Song)
+                .WithMany(a => a.ArtistSongs)
+                .HasForeignKey(a => a.SongId);
 
             // Seed data
-
             modelBuilder.Entity<Subscription>().HasData(
                 new Subscription { Id = 1, Type = "Free", Price = 0 },
                 new Subscription { Id = 2, Type = "Premium", Price = 9.99m },
@@ -102,8 +114,13 @@ namespace TunifyPlatform.Data
                 new Playlist { Id = 5, Name = "Playlist 5", UserId = 5 }
             );
 
-
-
+            modelBuilder.Entity<ArtistSongs>().HasData(
+                new ArtistSongs { ArtistId = 1, SongId = 1 },
+                new ArtistSongs { ArtistId = 2, SongId = 2 },
+                new ArtistSongs { ArtistId = 3, SongId = 3 },
+                new ArtistSongs { ArtistId = 1, SongId = 4 },
+                new ArtistSongs { ArtistId = 2, SongId = 5 }
+            );
         }
     }
 }
