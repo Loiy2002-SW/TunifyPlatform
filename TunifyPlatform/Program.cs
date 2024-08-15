@@ -23,6 +23,12 @@ namespace TunifyPlatform
 
             builder.Services.AddControllers();
 
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+                options.ListenLocalhost(5002); 
+            });
+
+
             var app = builder.Build();
 
             //app.MapGet("/", () => "This is my first app");
