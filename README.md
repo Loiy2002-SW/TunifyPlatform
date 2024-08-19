@@ -61,12 +61,35 @@ In this lab, we introduced advanced navigation and routing functionalities to im
 - **Lazy Loading**: Implemented lazy loading for certain modules to improve performance, loading only the necessary components when they are needed.
 
 ### Sample Route Definitions:
-```javascript
-{
-  path: 'playlists/:id/songs',
-  component: PlaylistSongsComponent,
-},
-{
-  path: 'artists/:id/songs',
-  component: ArtistSongsComponent,
-}
+	```javascript
+	{
+	  path: 'playlists/:id/songs',
+	 component: PlaylistSongsComponent,
+	},
+	{
+	  path: 'artists/:id/songs',
+	  component: ArtistSongsComponent,
+	}
+
+## Swagger UI Integration
+
+### Overview
+Swagger UI has been integrated into this project to provide an interactive interface for testing and documenting the API endpoints. This allows developers to easily explore the API's functionality, test requests, and view responses directly from the browser.
+
+### Accessing Swagger UI
+
+1. **Run the Application**
+   - Open a terminal or use Visual Studio to run the application. The app will run on `http://localhost:5002/` by default.
+
+	 Using the terminal:
+	```bash
+	dotnet run
+
+2. **Open Swagger UI**
+   - Open your browser and navigate to:
+	
+	   Using the terminal:
+		```bash	
+		 http://localhost:5002/
+
+    - The Swagger UI will display a list of all available API endpoints along with the supported HTTP methods (GET, POST, PUT, DELETE).
