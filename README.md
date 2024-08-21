@@ -105,3 +105,42 @@ This section covers the Identity Management implementation in the Tunify Platfor
 - **User Login and Logout**: Provides authentication and session management for users.
 - **Role Management**: Supports user roles and claims for authorization.
 - **Session Management**: Handles user sessions and token-based authentication.
+
+### Integrating ASP.NET Core Identity
+
+1. **Install Package**
+   - Install the `Microsoft.AspNetCore.Identity.EntityFrameworkCore` package.
+   - Ensure other required packages (e.g., `Microsoft.EntityFrameworkCore.SqlServer`) are also installed if using SQL Server.
+
+2. **Extend `AppDbContext`**
+   - Ensure `AppDbContext` extends `IdentityDbContext<IdentityUser>`.
+
+3. **Create DTOs**
+   - Create Data Transfer Objects (DTOs) for user management, such as `RegisterDto` and `LoginDto`.
+
+4. **Create the Interface**
+   - Define an interface (e.g., `IAccount`) for account-related operations.
+
+5. **Create the Service**
+   - Implement the service (e.g., `IdentityAccountService`) that adheres to the `IAccount` interface and handles authentication logic.
+
+6. **Create the Controller**
+   - Implement a controller that handles registration, login, and optionally password management.
+
+7. **Update `Program.cs`**
+   - Add the following services and configuration:
+     ```csharp
+     builder.Services.AddScoped<IAccount, IdentityAccountService>();
+     builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+         .AddEntityFrameworkStores<AppDbContext>();
+     app.UseAuthentication();
+     ```
+
+8. **Run Migrations**
+   - Execute the following commands to create and apply migrations:
+     ```bash
+     dotnet ef migrations add InitialCreate
+     dotnet ef database update
+     ```
+
+This guide provides the steps needed to set up ASP.NET Core Identity in your project, covering installation, configuration, and database setup.
