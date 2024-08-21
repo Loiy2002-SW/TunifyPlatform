@@ -3,6 +3,7 @@ using TunifyPlatform.Data;
 using TunifyPlatform.Repositories.Interfaces;
 using TunifyPlatform.Repositories.Services;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace TunifyPlatform
 {
@@ -24,6 +25,9 @@ namespace TunifyPlatform
             builder.Services.AddScoped<ISongRepository, SongRepository>();
             builder.Services.AddScoped<IArtistRepository, ArtistRepository>();
 
+            builder.Services.AddScoped<IAccount, IdentityAccountService>();
+
+
             // Register controllers
             builder.Services.AddControllers();
 
@@ -38,11 +42,9 @@ namespace TunifyPlatform
                 });
             });
 
-            //// Kestrel configuration
-            //builder.WebHost.ConfigureKestrel(options =>
-            //{
-            //    options.ListenLocalhost(5002);
-            //});
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+            .AddEntityFrameworkStores<TunifyDbContext>();
+
 
             var app = builder.Build();
 
@@ -61,6 +63,9 @@ namespace TunifyPlatform
                 options.SwaggerEndpoint("/api/v1/swagger.json", "Tunify API v1");
                 options.RoutePrefix = "TunifySwagger";  // Swagger UI at root
             });
+
+            app.UseAuthentication();
+            //app.UseAuthorization();
 
             // Map controllers
             app.MapControllers();

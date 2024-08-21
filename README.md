@@ -93,3 +93,15 @@ Swagger UI has been integrated into this project to provide an interactive inter
 		 http://localhost:5002/
 
     - The Swagger UI will display a list of all available API endpoints along with the supported HTTP methods (GET, POST, PUT, DELETE).
+
+
+## Identity:
+
+This section covers the Identity Management implementation in the Tunify Platform. It includes user authentication, role management, and session handling using ASP.NET Core Identity.
+
+### Features
+
+- **User Registration**: Allows new users to sign up with their details.
+- **User Login and Logout**: Provides authentication and session management for users.
+- **Role Management**: Supports user roles and claims for authorization.
+- **Session Management**: Handles user sessions and token-based authentication.

@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using TunifyPlatform.Models;
 
 namespace TunifyPlatform.Data
 {
-    public class TunifyDbContext : DbContext
+    public class TunifyDbContext : IdentityDbContext<IdentityUser>
     {
         public TunifyDbContext(DbContextOptions<TunifyDbContext> options) : base(options)
         {
@@ -26,22 +28,22 @@ namespace TunifyPlatform.Data
             modelBuilder.Entity<User>()
                 .HasOne(u => u.Subscription)
                 .WithMany(s => s.Users)
-                .HasForeignKey(u => u.SubscriptionId);
+                .HasForeignKey(u => u.SubscriptionId).OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Playlist>()
                 .HasOne(p => p.User)
                 .WithMany(u => u.Playlists)
-                .HasForeignKey(p => p.UserId);
+                .HasForeignKey(p => p.UserId).OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Song>()
                 .HasOne(s => s.Artist)
                 .WithMany(a => a.Songs)
-                .HasForeignKey(s => s.ArtistId);
+                .HasForeignKey(s => s.ArtistId).OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Song>()
                 .HasOne(s => s.Album)
                 .WithMany(a => a.Songs)
-                .HasForeignKey(s => s.AlbumId);
+                .HasForeignKey(s => s.AlbumId).OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<PlaylistSongs>()
                 .HasKey(ps => new { ps.PlaylistId, ps.SongId });
@@ -49,12 +51,12 @@ namespace TunifyPlatform.Data
             modelBuilder.Entity<PlaylistSongs>()
                 .HasOne(ps => ps.Playlist)
                 .WithMany(p => p.PlaylistSongs)
-                .HasForeignKey(ps => ps.PlaylistId);
+                .HasForeignKey(ps => ps.PlaylistId).OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<PlaylistSongs>()
                 .HasOne(ps => ps.Song)
                 .WithMany(s => s.PlaylistSongs)
-                .HasForeignKey(ps => ps.SongId);
+                .HasForeignKey(ps => ps.SongId).OnDelete(DeleteBehavior.Restrict);
 
             // Configuring the ArtistSong relationship
             modelBuilder.Entity<ArtistSongs>()
