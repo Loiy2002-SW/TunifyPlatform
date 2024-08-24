@@ -106,6 +106,7 @@ This section covers the Identity Management implementation in the Tunify Platfor
 - **Role Management**: Supports user roles and claims for authorization.
 - **Session Management**: Handles user sessions and token-based authentication.
 
+
 ### Integrating ASP.NET Core Identity
 
 1. **Install Package**
@@ -144,3 +145,19 @@ This section covers the Identity Management implementation in the Tunify Platfor
      ```
 
 This guide provides the steps needed to set up ASP.NET Core Identity in your project, covering installation, configuration, and database setup.
+
+
+# Lab 15: JWT Authentication and Authorization
+
+## Setup JWT Authentication
+1. Install `Microsoft.AspNetCore.Authentication.JwtBearer` package.
+2. Configure JWT authentication in `Program.cs`.
+3. Implement `JwtTokenService` for token creation and validation.
+
+## Secure API Endpoints
+1. Add `[Authorize]` attributes to secure API endpoints.
+2. Use role-based and policy-based authorization as needed.
+
+## Manage Roles and Claims
+1. Seed initial roles and a default admin user in `TunifyDbContext`.
+2. Assign roles and claims to users and secure endpoints based on these roles.

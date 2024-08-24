@@ -12,8 +12,8 @@ using TunifyPlatform.Data;
 namespace TunifyPlatform.Migrations
 {
     [DbContext(typeof(TunifyDbContext))]
-    [Migration("20240821201954_identity")]
-    partial class identity
+    [Migration("20240824143536_Jwt")]
+    partial class Jwt
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,71 +75,6 @@ namespace TunifyPlatform.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -350,46 +285,15 @@ namespace TunifyPlatform.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("Playlists");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Playlist 1",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Playlist 2",
-                            UserId = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Playlist 3",
-                            UserId = 3
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Playlist 4",
-                            UserId = 4
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Playlist 5",
-                            UserId = 5
-                        });
                 });
 
             modelBuilder.Entity("TunifyPlatform.Models.PlaylistSongs", b =>
@@ -530,72 +434,151 @@ namespace TunifyPlatform.Migrations
 
             modelBuilder.Entity("TunifyPlatform.Models.User", b =>
                 {
-                    b.Property<int>("UserId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("JoinDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("SubscriptionId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
 
-                    b.HasKey("UserId");
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.HasIndex("SubscriptionId");
 
-                    b.ToTable("Users");
+                    b.ToTable("AspNetUsers", (string)null);
 
                     b.HasData(
                         new
                         {
-                            UserId = 1,
+                            Id = "d4792f75-1c2e-4316-8ec6-c7a74aa6ced2",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "1e6b8357-9df7-421c-8d56-75096410ff30",
                             Email = "admin@example.com",
-                            JoinDate = new DateTime(2024, 8, 21, 23, 19, 54, 731, DateTimeKind.Local).AddTicks(9469),
+                            EmailConfirmed = false,
+                            JoinDate = new DateTime(2024, 8, 24, 17, 35, 36, 289, DateTimeKind.Local).AddTicks(6640),
+                            LockoutEnabled = false,
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "d8ac8851-6bf8-499d-bfed-12e8b15d7dfc",
                             SubscriptionId = 1,
-                            Username = "admin"
+                            TwoFactorEnabled = false,
+                            UserName = "admin"
                         },
                         new
                         {
-                            UserId = 2,
+                            Id = "84fbd7b5-ab1b-4dca-94b9-cfa3a3f0038d",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "4ee4e334-643a-434e-94da-768175fdbd91",
                             Email = "user1@example.com",
-                            JoinDate = new DateTime(2024, 8, 11, 23, 19, 54, 731, DateTimeKind.Local).AddTicks(9481),
+                            EmailConfirmed = false,
+                            JoinDate = new DateTime(2024, 8, 14, 17, 35, 36, 289, DateTimeKind.Local).AddTicks(6663),
+                            LockoutEnabled = false,
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "2b387307-a8e1-4686-8257-a53e14169fa9",
                             SubscriptionId = 1,
-                            Username = "user1"
+                            TwoFactorEnabled = false,
+                            UserName = "user1"
                         },
                         new
                         {
-                            UserId = 3,
+                            Id = "8f828e2b-95e8-4855-b247-2cf8d9cbc893",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "931ddcc3-ce6d-4e5c-ae4a-b9e518fa6e27",
                             Email = "user2@example.com",
-                            JoinDate = new DateTime(2024, 8, 1, 23, 19, 54, 731, DateTimeKind.Local).AddTicks(9488),
+                            EmailConfirmed = false,
+                            JoinDate = new DateTime(2024, 8, 4, 17, 35, 36, 289, DateTimeKind.Local).AddTicks(6726),
+                            LockoutEnabled = false,
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "d28d1ce0-4d71-4e69-aad3-6e0c858be012",
                             SubscriptionId = 2,
-                            Username = "user2"
+                            TwoFactorEnabled = false,
+                            UserName = "user2"
                         },
                         new
                         {
-                            UserId = 4,
+                            Id = "1785dcb9-8cb1-4b39-a605-baa59b5e7d70",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "d1737a22-1aa6-4367-9a21-08437ec20325",
                             Email = "user3@example.com",
-                            JoinDate = new DateTime(2024, 7, 22, 23, 19, 54, 731, DateTimeKind.Local).AddTicks(9490),
+                            EmailConfirmed = false,
+                            JoinDate = new DateTime(2024, 7, 25, 17, 35, 36, 289, DateTimeKind.Local).AddTicks(6733),
+                            LockoutEnabled = false,
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "d91d6f99-e510-4c89-a6f6-a3191a035494",
                             SubscriptionId = 2,
-                            Username = "user3"
+                            TwoFactorEnabled = false,
+                            UserName = "user3"
                         },
                         new
                         {
-                            UserId = 5,
+                            Id = "fab7e370-6bbc-479a-9959-cfa74911749f",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "33ecce1e-285e-407d-b3f0-45ae417b5bc2",
                             Email = "user4@example.com",
-                            JoinDate = new DateTime(2024, 7, 12, 23, 19, 54, 731, DateTimeKind.Local).AddTicks(9491),
+                            EmailConfirmed = false,
+                            JoinDate = new DateTime(2024, 7, 15, 17, 35, 36, 289, DateTimeKind.Local).AddTicks(6742),
+                            LockoutEnabled = false,
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "8f48e59a-fe92-490d-a8b7-d0746148cac6",
                             SubscriptionId = 1,
-                            Username = "user4"
+                            TwoFactorEnabled = false,
+                            UserName = "user4"
                         });
                 });
 
@@ -610,7 +593,7 @@ namespace TunifyPlatform.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("TunifyPlatform.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -619,7 +602,7 @@ namespace TunifyPlatform.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("TunifyPlatform.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -634,7 +617,7 @@ namespace TunifyPlatform.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("TunifyPlatform.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -643,7 +626,7 @@ namespace TunifyPlatform.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("TunifyPlatform.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
