@@ -36,13 +36,13 @@ namespace TunifyPlatform.Controllers
         public async Task<IActionResult> CreateUser(User user)
         {
             await _userRepository.AddUserAsync(user);
-            return CreatedAtAction(nameof(GetUserById), new { id = user.UserId }, user);
+            return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, User user)
+        public async Task<IActionResult> UpdateUser(string id, User user)
         {
-            if (id != user.UserId)
+            if (id != user.Id)
                 return BadRequest();
 
             await _userRepository.UpdateUserAsync(user);

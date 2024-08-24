@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TunifyPlatform.Models.DTOs;
 using TunifyPlatform.Repositories.Interfaces;
+using System;
+using System.Threading.Tasks;
+using System.Linq;
 
 namespace TunifyPlatform.Controllers
 {
@@ -18,35 +21,59 @@ namespace TunifyPlatform.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
         {
-            var result = await _accountService.RegisterAsync(registerDto);
-            if (result.Succeeded)
+            if (registerDto == null)
             {
-                return Ok("User registered successfully.");
+                return BadRequest("Invalid registration request.");
             }
 
-            return BadRequest(result.Errors);
+            var result = await _accountService.RegisterAsync(registerDto);
+            if (result != null)
+            {
+                return CreatedAtAction(nameof(Register), new { token = result }, new { message = "User registered successfully." });
+            }
+
+            return BadRequest(new { errors = "Something went wrong" });
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
+            if (loginDto == null)
+            {
+                return BadRequest("Invalid login request.");
+            }
+
             try
             {
                 var result = await _accountService.LoginAsync(loginDto);
-                return Ok(result);
+                return Ok(new { token = result });
             }
             catch (UnauthorizedAccessException ex)
             {
-                return Unauthorized(ex.Message);
+                return Unauthorized(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                // _logger.LogError(ex, "Login failed.");
+                return StatusCode(500, new { message = "An unexpected error occurred." });
             }
         }
 
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
-            await _accountService.LogoutAsync();
-            return Ok("User logged out successfully.");
+            try
+            {
+                await _accountService.LogoutAsync();
+                return Ok(new { message = "User logged out successfully." });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                // _logger.LogError(ex, "Logout failed.");
+                return StatusCode(500, new { message = "An unexpected error occurred." });
+            }
         }
     }
-
 }

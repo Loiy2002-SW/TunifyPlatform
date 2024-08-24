@@ -5,7 +5,7 @@ using TunifyPlatform.Models;
 
 namespace TunifyPlatform.Data
 {
-    public class TunifyDbContext : IdentityDbContext<IdentityUser>
+    public class TunifyDbContext : IdentityDbContext<User>
     {
         public TunifyDbContext(DbContextOptions<TunifyDbContext> options) : base(options)
         {
@@ -80,11 +80,11 @@ namespace TunifyPlatform.Data
             );
 
             modelBuilder.Entity<User>().HasData(
-                new User { UserId = 1, Username = "admin", Email = "admin@example.com", JoinDate = DateTime.Now, SubscriptionId = 1 },
-                new User { UserId = 2, Username = "user1", Email = "user1@example.com", JoinDate = DateTime.Now.AddDays(-10), SubscriptionId = 1 },
-                new User { UserId = 3, Username = "user2", Email = "user2@example.com", JoinDate = DateTime.Now.AddDays(-20), SubscriptionId = 2 },
-                new User { UserId = 4, Username = "user3", Email = "user3@example.com", JoinDate = DateTime.Now.AddDays(-30), SubscriptionId = 2 },
-                new User { UserId = 5, Username = "user4", Email = "user4@example.com", JoinDate = DateTime.Now.AddDays(-40), SubscriptionId = 1 }
+                new User { UserName = "admin", Email = "admin@example.com", JoinDate = DateTime.Now, SubscriptionId = 1 },
+                new User { UserName = "user1", Email = "user1@example.com", JoinDate = DateTime.Now.AddDays(-10), SubscriptionId = 1 },
+                new User { UserName = "user2", Email = "user2@example.com", JoinDate = DateTime.Now.AddDays(-20), SubscriptionId = 2 },
+                new User { UserName = "user3", Email = "user3@example.com", JoinDate = DateTime.Now.AddDays(-30), SubscriptionId = 2 },
+                new User { UserName = "user4", Email = "user4@example.com", JoinDate = DateTime.Now.AddDays(-40), SubscriptionId = 1 }
             );
 
             modelBuilder.Entity<Artist>().HasData(
@@ -108,13 +108,13 @@ namespace TunifyPlatform.Data
                 new Song { Id = 5, Title = "Song 5", ArtistId = 2, AlbumId = 1, Duration = TimeSpan.FromMinutes(3), Genre = "Classical" }
             );
 
-            modelBuilder.Entity<Playlist>().HasData(
-                new Playlist { Id = 1, Name = "Playlist 1", UserId = 1 },
-                new Playlist { Id = 2, Name = "Playlist 2", UserId = 2 },
-                new Playlist { Id = 3, Name = "Playlist 3", UserId = 3 },
-                new Playlist { Id = 4, Name = "Playlist 4", UserId = 4 },
-                new Playlist { Id = 5, Name = "Playlist 5", UserId = 5 }
-            );
+            //modelBuilder.Entity<Playlist>().HasData(
+            //    new Playlist { Id = 1, Name = "Playlist 1", UserId = "1" },
+            //    new Playlist { Id = 2, Name = "Playlist 2", UserId = "2" },
+            //    new Playlist { Id = 3, Name = "Playlist 3", UserId = "3" },
+            //    new Playlist { Id = 4, Name = "Playlist 4", UserId = "4" },
+            //    new Playlist { Id = 5, Name = "Playlist 5", UserId = "5" }
+            //);
 
             modelBuilder.Entity<ArtistSongs>().HasData(
                 new ArtistSongs { ArtistId = 1, SongId = 1 },

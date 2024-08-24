@@ -4,6 +4,7 @@ using TunifyPlatform.Repositories.Interfaces;
 using TunifyPlatform.Repositories.Services;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace TunifyPlatform
 {
@@ -19,13 +20,26 @@ namespace TunifyPlatform
             // Register DbContext with SQL Server
             builder.Services.AddDbContext<TunifyDbContext>(opt => opt.UseSqlServer(ConnectionStringVar));
 
+            // Add this in the service configuration section
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = JWTService.ValidateToken(builder.Configuration);
+            });
+
             // Register the repositories
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IPlaylistRepository, PlaylistRepository>();
             builder.Services.AddScoped<ISongRepository, SongRepository>();
             builder.Services.AddScoped<IArtistRepository, ArtistRepository>();
-
             builder.Services.AddScoped<IAccount, IdentityAccountService>();
+
+            builder.Services.AddScoped<JWTService>();
 
 
             // Register controllers
@@ -65,7 +79,7 @@ namespace TunifyPlatform
             });
 
             app.UseAuthentication();
-            //app.UseAuthorization();
+            app.UseAuthorization();
 
             // Map controllers
             app.MapControllers();

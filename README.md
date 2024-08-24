@@ -105,3 +105,18 @@ This section covers the Identity Management implementation in the Tunify Platfor
 - **User Login and Logout**: Provides authentication and session management for users.
 - **Role Management**: Supports user roles and claims for authorization.
 - **Session Management**: Handles user sessions and token-based authentication.
+
+# Lab 15: JWT Authentication and Authorization
+
+## Setup JWT Authentication
+1. Install `Microsoft.AspNetCore.Authentication.JwtBearer` package.
+2. Configure JWT authentication in `Program.cs`.
+3. Implement `JwtTokenService` for token creation and validation.
+
+## Secure API Endpoints
+1. Add `[Authorize]` attributes to secure API endpoints.
+2. Use role-based and policy-based authorization as needed.
+
+## Manage Roles and Claims
+1. Seed initial roles and a default admin user in `TunifyDbContext`.
+2. Assign roles and claims to users and secure endpoints based on these roles.
